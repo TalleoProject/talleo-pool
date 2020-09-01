@@ -138,6 +138,7 @@
         <div><i class="fa fa-paw"></i> Last Hash: <a id="lastHash" target="_blank"></a></div>
         <div><i class="fas fa-coins"></i> Coins Mined: <span id="totalCoins"></span></div>
         <div><i class="fas fa-sync-alt"></i> Circulating Supply: <span id="circulatingSupply"></span></div>
+        <div><i class="fa fa-lock"></i> Locked Supply: <span id="lockedSupply"></span></div>
         <div><i class="fa fa-percent"></i> Emission: <span id="emissionPercent"></span></div>
         <div><i class="fas fa-cart-arrow-down"></i> Pending Transactions: <a href="./#mempool_transactions"><span id="pendingTransactions"></span></a></div>
         <div><i class="fa fa-bars"></i> Total Transactions: <span id="totalTransactions"></span></div>
@@ -159,6 +160,10 @@
             <tbody id="top10_rows"></tbody>
         </table>
         </div>
+    </div>
+
+    <div class="col-md-4 stats">
+        <iframe src="https://www.cryptunit.com/widgets/1.php?coin=145&small=false&transparent=true&black=true" height="270" width="100%" frameBorder="0" style="overflow:hidden;" scrolling="no" ></iframe>
     </div>
 
     <div class="col-md-4 stats marketRate">
@@ -893,6 +898,9 @@
             .done(function (data) {
                 if (data.hasOwnProperty('circulatingCoins')) {
                     updateText('circulatingSupply', getReadableCoins(data.circulatingCoins));
+                }
+                if (data.hasOwnProperty('lockedCoins')) {
+                    updateText('lockedSupply', getReadableCoins(data.lockedCoins));
                 }
             });
     }

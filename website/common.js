@@ -47,14 +47,21 @@ function getReadableTime(seconds){
         [7, 'day'], [4, 'week'], [12, 'month'], [1, 'year'] ];
 
     function formatAmounts(amount, unit){
-        var rounded = Math.round(amount);
+        var rounded = Math.floor(amount);
         return '' + rounded + ' ' + unit + (rounded > 1 ? 's' : '');
     }
 
     var amount = seconds;
+    var amount2 = 0;
     for (var i = 0; i < units.length; i++){
-        if (amount < units[i][0])
-            return formatAmounts(amount, units[i][1]);
+        if (amount < units[i][0]) {
+            if (Math.floor(amount2) == 0) {
+                return formatAmounts(amount, units[i][1]);
+            } else {
+                return formatAmounts(amount, units[i][1]) + " and " + formatAmounts(amount2, units[i-1][1]);
+            }
+        }
+        amount2 = amount % units[i][0];
         amount = amount / units[i][0];
     }
     return formatAmounts(amount, units[units.length - 1][1]);
