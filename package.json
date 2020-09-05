@@ -14,8 +14,8 @@
         "cli-color": "*",
         "dateformat": "*",
         "base58-native": "*",
-        "multi-hashing": "git://github.com/turtlecoin/node-multi-hashing-node8.git",
-        "cryptonote-util": "git://github.com/turtlecoin/node-cryptonote-util.git"
+        "turtlecoin-multi-hashing": "0.0.19",
+        "turtlecoin-cryptonote-util": "0.0.7"
     },
     "engines": {
         "node": ">=0.10"
