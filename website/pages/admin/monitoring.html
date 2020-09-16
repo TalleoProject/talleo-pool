@@ -59,8 +59,8 @@
 			{{#each logs}}
 			<tr>
 				<td data-sort="{{@key}}"><a href="{{this.link}}" target="_blank">{{@key}}</a></td>
-				<td data-sort="{{this.changed}}">{{this.changed}}</td>
-				<td data-sort="{{this.size}}">{{this.size}} bytes</td>
+				<td data-sort="{{this.changed}}">{{this.changedString}}</td>
+				<td data-sort="{{this.size}}" title="{{this.size}}">{{this.sizeString}}</td>
 			</tr>
 			{{/each}}
 			</tbody>
@@ -97,7 +97,8 @@
 			if(data.hasOwnProperty('logs')) {
 				properData['logs'] = data['logs'];
 				for(var log in data['logs']) {
-					properData['logs'][log].changed = Date(data['logs'][log].changed * 1000);
+					properData['logs'][log].changedString = new Date(data['logs'][log].changed * 1000);
+					properData['logs'][log].sizeString = getReadableSizeString(parseInt(data['logs'][log].size));
 					data['logs'][log].link = api + '/admin_log?file=' + log + '&password=' + docCookies.getItem('password');
 				}
 			}
