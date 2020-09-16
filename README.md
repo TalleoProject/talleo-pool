@@ -470,7 +470,7 @@ You can create a testnet with the following steps:
 * You now need to run two instance of the daemon and connect them to each other (without a connection to another instance the daemon will not accept RPC requests)
   * Run first instance with `./Talleod --testnet --p2p-bind-port 28080 --allow-local-ip`
   * Run second instance with `./Talleod --testnet --p2p-bind-port 5011 --rpc-bind-port 5010 --add-peer 0.0.0.0:28080 --allow-local-ip`
-* You should now have a local testnet setup. The ports can be changes as long as the second instance is pointed to the first instance, obviously
+* You should now have a local testnet setup. The ports can be changed as long as the second instance is pointed to the first instance, obviously
 
 ### JSON-RPC Commands from CLI
 
