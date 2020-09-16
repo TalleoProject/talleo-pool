@@ -499,13 +499,13 @@ You need the latest stable version of Talleod from [TalleoProject GitHub](https:
 * Start the daemon with:
 
 ```
-Talleod.exe --enable_blockexplorer --rpc-bind-ip 0.0.0.0 --enable-cors *
+Talleod.exe --enable-blockexplorer --rpc-bind-ip 0.0.0.0 --enable-cors *
 ```
 
 or
 
 ```
-./Talleod --enable_blockexplorer --rpc-bind-ip 0.0.0.0 --enable-cors "*"
+./Talleod --enable-blockexplorer --rpc-bind-ip 0.0.0.0 --enable-cors "*"
 ```
 
 * Change the following line in the pool's frontend config.json:
