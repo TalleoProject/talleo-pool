@@ -41,7 +41,7 @@
                 <th><i class="far fa-money-bill-alt"></i> Total Fee</th>
                 <th><i class="fas fa-coins"></i> Denomination</th>
                 <th><i class="fa fa-th-large"></i> Pending Blocks</th>
-                <th><i class="fa fa-th-large"></i> Total Blocks Found</th>
+                <th colspan="2"><i class="fa fa-th-large"></i> Total Blocks Found</th>
                 <th><i class="far fa-clock"></i> Last Block Found</th>
             </tr>
         </thead>
@@ -59,6 +59,7 @@
                 <td id="denomination-total"></td>
                 <td id="pendingBlocks-total"></td>
                 <td id="totalBlocks-total"></td>
+                <td id="totalBlockspercent-total">100.00%</td>
                 <td id="lastBlockFound-total"></td>
             </tr>
         </tfoot>
@@ -133,7 +134,7 @@
             $('#network_rows').append('<tr>' +
                 '<td id=host-'+host+'><a target=blank href=http://'+host+'>'+host+'</a></td>' +
                 '<td id=height-'+host+' title='+data.network.height+'>'+data.network.height+'</td>' +
-                '<td id=hashrate-'+host+' title='+hashrate+'>'+getReadableHashRateString(hashrate)+'/s</td>' +
+                '<td id=hashrate-'+host+' title='+hashrate+'>'+getReadableHashRateString(hashrate)+'</td>' +
                 '<td id=hashratepercent-'+host+'>0%</td>'+
                 '<td id=miners-'+host+' title='+miners+'>'+miners+'</td>' +
                 '<td id=workers-'+host+' title='+workers+'>'+workers+'</td>' +
@@ -141,6 +142,7 @@
                 '<td id=denomination-'+host+' title='+data.config.denominationUnit+'>'+getReadableCoins(data.config.denominationUnit,2,true)+'</td>' +
                 '<td id=pendingBlocks-'+host+' title='+calculatePending(data)+'>'+calculatePending(data)+'</td>'+
                 '<td id=totalBlocks-'+host+' title='+blocks+'>'+blocks+'</td>' +
+                '<td id=totalBlockspercent-'+host+'>0%</td>'+
                 '<td id=lastBlockFound-'+host+' title='+lastblock+'>'+ (lastblock ? new Date(lastblock).toLocaleString() : 'Never') +'</td>' +
             '</tr>');
             updateTotals();
@@ -163,7 +165,7 @@
         }
     }
     function getCellValue(row) {
-        return $(row).children('td').eq(10).prop('title');
+        return $(row).children('td').eq(11).prop('title');
     }
 
     function updateTotals() {
@@ -181,7 +183,7 @@
         for (var i = 0; i < pools.length; i++) {
             var pool = pools[i];
             var blockFound = 0;
-            var height =   parseInt(pool.childNodes[1].title);
+            var height =    parseInt(pool.childNodes[1].title);
             if (height > highestHeight) {
                 highestHeight = height;
             }
@@ -191,7 +193,7 @@
             denomination =  parseInt(pool.childNodes[7].title);
             totalPending += parseInt(pool.childNodes[8].title);
             totalBlocks +=  parseInt(pool.childNodes[9].title);
-            blockFound =    parseInt(pool.childNodes[10].title);
+            blockFound =    parseInt(pool.childNodes[11].title);
             if (denomination > highestDenomination) {
                 highestDenomination = denomination;
             }
@@ -204,8 +206,11 @@
         for (var i = 0; i < pools.length; i++) {
             var pool = pools[i];
             var poolhashrate = parseInt(pool.childNodes[2].title);
+            var poolblocks = parseInt(pool.childNodes[9].title);
             var percent = poolhashrate * 100 / hashrate;
             pool.childNodes[3].innerHTML = percent.toFixed(2) + "%";
+            percent = poolblocks * 100 / totalBlocks;
+            pool.childNodes[10].innerHTML = percent.toFixed(2) + "%";
         }
         updateText('height-total', highestHeight);
         updateText('hashrate-total', getReadableHashRateString(hashrate));

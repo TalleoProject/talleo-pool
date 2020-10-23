@@ -114,7 +114,7 @@
         <div id="donations"><i class="fa fa-gift"></i> Donations: <span id="poolDonations"></span></div>
         <div id="solverReward"><i class="fa fa-percent"></i> Solver Reward: <span id="poolSolverReward"></span></div>
         <div><i class="fa fa-history"></i> Average Block Time: <span id="blockSolvedTime"></span></div>
-        <div><i class="fa fa-th-large"></i> Total Blocks Mined: <span id="blocksTotal"></span></div>
+        <div><i class="fa fa-th-large"></i> Total Blocks Mined: <span id="blocksTotal"></span> <span id="blocksPercent"></span></div>
         <div><i class="fa fa-percent"></i> Pool Fee: <span id="poolFee"></span></div>
         <div><i class="far fa-clock"></i> Round Time: <span id="elapsedroundtime" target="_blank"></span></div>
         <div><i class="fa fa-users"></i> Round Hashes: <span id="poolRoundHashes"></span></div>
@@ -485,6 +485,9 @@
             updateCirculatingSupply();
             updateInfo();
             updateText('blocksTotal', lastStats.pool.totalBlocks.toString());
+            if (lastStats.network.height) {
+                updateText('blocksPercent', '(' + (lastStats.pool.totalBlocks * 100 / lastStats.network.height).toFixed(2) + '%)');
+            } 
 
             calcEstimateProfit();
 
@@ -877,9 +880,13 @@
             dataType: 'json',
             cache: 'false',
             success: function(data){
-                updateText('totalCoins', getReadableCoins(data.result.block.alreadyGeneratedCoins));
-                updateText('totalTransactions', data.result.block.alreadyGeneratedTransactions);
-                updateText('emissionPercent', (data.result.block.alreadyGeneratedCoins / 300000000).toFixed(2) + '%');
+                if (data.result && data.result.block) {
+                    updateText('totalCoins', getReadableCoins(data.result.block.alreadyGeneratedCoins));
+                    updateText('totalTransactions', data.result.block.alreadyGeneratedTransactions);
+                    updateText('emissionPercent', (data.result.block.alreadyGeneratedCoins / 300000000).toFixed(2) + '%');
+                } else {
+                    console.log("Unable to fetch data about latest block!");
+                }
             }
         });
     }
