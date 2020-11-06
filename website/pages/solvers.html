@@ -56,9 +56,10 @@
             var r = data[i];
             var miner = r.miner;
             var hashesPerBlock = r.blocks ? (r.hashes || 0) / r.blocks : 0;
+            var blocksPercent = lastStats.network.height ? " (" + ((r.blocks || 0) * 100 / lastStats.network.height).toFixed(2) + "%)" : "";
             if (rows.children.length < i + 1) {
                 if (r.blocks > 0) {
-                    rows.innerHTML += '<tr data-hashrate="' + r.hashrate + '" data-miner="' + r.miner + '" data-blocks="' + r.blocks + '" data-hashes="' + r.hashes + '" id="' + r.miner +'"><td>'+(i+1)+'</td>'+'<td>'+miner+'</td>'+'<td title="' + (r.hashrate || 0) + ' H/s">'+getReadableHashRateString(r.hashrate || 0)+'</td><td title="' + (r.blocks || 0) + '">' + (r.blocks || 0) + '</td><td title="' + (r.hashes || 0) + '">' + getReadableHashesString(r.hashes) + '</td><td title="' + hashesPerBlock + '">' + getReadableHashesString(hashesPerBlock) + '</td></tr>';
+                    rows.innerHTML += '<tr data-hashrate="' + r.hashrate + '" data-miner="' + r.miner + '" data-blocks="' + r.blocks + '" data-hashes="' + r.hashes + '" id="' + r.miner +'"><td>'+(i+1)+'</td>'+'<td>'+miner+'</td>'+'<td title="' + (r.hashrate || 0) + ' H/s">'+getReadableHashRateString(r.hashrate || 0)+'</td><td title="' + (r.blocks || 0) + '">' + (r.blocks || 0) + blocksPercent + '</td><td title="' + (r.hashes || 0) + '">' + getReadableHashesString(r.hashes) + '</td><td title="' + hashesPerBlock + '">' + getReadableHashesString(hashesPerBlock) + '</td></tr>';
                 }
             }
             else {
@@ -70,7 +71,7 @@
                 minerRow.children.item(2).setAttribute('title', (r.hashrate || 0)+' H/s');
                 minerRow.children.item(2).innerHTML = getReadableHashRateString(r.hashrate || 0);
                 minerRow.children.item(3).setAttribute('title', (r.blocks || 0));
-                minerRow.children.item(3).innerHTML = (r.blocks || 0);
+                minerRow.children.item(3).innerHTML = (r.blocks || 0) + blocksPercent;
                 minerRow.children.item(4).setAttribute('title', (r.hashes || 0));
                 minerRow.children.item(4).innerHTML = getReadableHashesString(r.hashes || 0);
                 minerRow.children.item(5).setAttribute('title', hashesPerBlock);
