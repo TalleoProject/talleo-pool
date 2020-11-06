@@ -322,7 +322,7 @@
             <div class="yourStats"><i class="far fa-clock"></i> Last Share Submitted: <span id="yourLastShare"></span></div>
             <div class="yourStats"><i class="fas fa-tachometer-alt"></i> Hash Rate: <span id="yourHashrateHolder"></span></div>
             <div class="yourStats"><i class="fas fa-cloud-upload-alt"></i> Total Hashes Submitted: <span id="yourHashes"></span></div>
-            <div class="yourStats"><i class="fa fa-th-large"></i> Total Blocks Found: <span id="yourBlocks"></span></div>
+            <div class="yourStats"><i class="fa fa-th-large"></i> Total Blocks Found: <span id="yourBlocks"></span> <span id="yourBlocksPercent"></span></div>
             <div class="yourStats"><i class="fas fa-tachometer-alt"></i> Hashes Per Block: <span id="yourHashesPerBlock"></span></div>
             <div class="yourStats"><i class="fas fa-dollar-sign"></i> Hashes Per <abbr id="coinSymbol">Coin</abbr>: <span id="yourHashesPerCoin"></span></div>
         </div>
@@ -703,6 +703,9 @@
                     updateTitleText('yourHashes', data.stats.hashes);
                     updateText('yourBlocks', (data.stats.blocks || 0));
                     updateTitleText('yourBlocks', (data.stats.blocks || 0));
+                    if (lastStats.network.height) {
+                        updateText('yourBlocksPercent', '(' + ((data.stats.blocks || 0) * 100 / lastStats.network.height).toFixed(2) + '%)');
+                    }
                     var hashesPerBlock = data.stats.blocks ? ((data.stats.hashes || 0) / data.stats.blocks) : 0;
                     updateText('yourHashesPerBlock', getReadableHashesString(hashesPerBlock));
                     updateTitleText('yourHashesPerBlock', hashesPerBlock);
