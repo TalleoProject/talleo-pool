@@ -1,4 +1,13 @@
 <style>
+    #blocksChartDiv{
+        display: none;
+    }
+    a.chart-style{
+        background-color: #34B55C;
+        border-left-color: #34B55C;
+        width: 5px;
+        border-width: 3px;
+    }
     .blocksStatHolder > span{
         display: inline-block;
         border-radius: 5px;
@@ -29,6 +38,17 @@
     <span class="bg-info">Average Luck: <span id="blocksAverageLuck"></span></span>
     <span class="bg-info">Average Time: <span id="blocksAverageTime"></span></span>
     <span class="bg-info">Pending Blocks: <span id="blocksPending"></span></span>
+</div>
+
+<hr>
+
+<!-- Chart -->
+<div id="blocksChartDiv">
+    <h4 id="blocksChartTitle">Blocks found</h4>
+    <div class="chart" style="height:200px;">
+        <canvas id="blocksChart"></canvas>
+        <a class="chart-style"></a>
+    </div>
 </div>
 
 <hr>
@@ -68,11 +88,91 @@
             updateText('blocksTotal', lastStats.pool.totalBlocks.toString());
             updateText('blocksMaturityCount', lastStats.config.depth.toString());
             updateText('blocksPending', pendingBlocks());
+            if (lastStats.charts.blocks) {
+                generateChart(lastStats.charts.blocks);
+            }
             renderBlocks(lastStats.pool.blocks);
         }
     };
 
+    // Chart
+    var displayedChart = false;
+    function generateChart(data) {
+        if (displayedChart || !data || data === "undefined") return;
 
+        var chartDays = lastStats.config.blocksChartDays || null;
+        var title = 'Blocks found';
+        if (chartDays) {
+            if (chartDays === 1) title = 'Blocks found in the last 24 hours';
+            else title = 'Blocks found in the last {DAYS} days';
+	    title = title.replace('{DAYS}', chartDays);
+        }
+        updateText('blocksChartTitle', title);
+
+        var labels = [];
+        var values = [];
+
+        for (var key in data) {
+            var label = key;
+            if (chartDays && chartDays === 1) {
+                var keyParts = key.split(' ');
+                label = keyParts[1].replace(':00', '');
+            }
+            labels.push(label);
+            values.push(data[key]);
+        }
+
+        var $chart = $('#blocksChart');
+        var bgcolor = null, bordercolor = null, borderwidth = null;
+        var colorelem = $chart.siblings('a.chart-style');
+        if (colorelem.length == 1) {
+            bgcolor = colorelem.css('background-color');
+            bordercolor = colorelem.css('border-left-color');
+            borderwidth = parseFloat(colorelem.css('width'));
+        }
+        if (bgcolor === null) bgcolor = 'rgba(0, 0, 0, .7)';
+        if (bordercolor === null) bordercolor = '#03a9f4';
+        if (borderwidth === null || isNaN(borderwidth)) borderwidth = 1;
+
+        var chart = new Chart(document.getElementById('blocksChart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Blocks',
+                    data: values,
+                    fill: false,
+                    backgroundColor: bgcolor,
+                    borderColor: bordercolor,
+                    borderWidth: borderwidth,
+                    barThickness: 20,  // number (pixels) or 'flex'
+                    maxBarThickness: 30 // number (pixels)                    
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: { display: false },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 100,
+                            userCallback: function(label, index, labels) {
+                                if (Math.floor(label) === label) return label;
+                            }
+                        }
+                    }],
+                },
+                layout: {
+                    padding: { top: 0, left: 0, right: 0, bottom: 0 }
+                }
+            }
+        });
+        $chart.show();
+        $('#blocksChartDiv').show();
+        displayedChart = true;
+    }
 
     var xhrGetBlocks;
     $('#loadMoreBlocks').click(function(){

@@ -183,35 +183,42 @@
             <!-- <p class="text-center" id="cur_profit">-</p> -->
         </div>
     </div>
-    <div class="col-sm-25 chartWrap">
+    <div class="col-sm-33 chartWrap">
         <h4>Price in USD</h4>
         <div id="chartPriceUsd" data-chart="price">
             <div class="chart"></div>
             <!-- <p class="text-center" id="cur_price">-</p> -->
         </div>
     </div>
-    <div class="col-sm-25 chartWrap">
+    <div class="col-sm-33 chartWrap">
         <h4>Difficulty</h4>
         <div id="chartDifficulty" data-chart="diff">
             <div class="chart"></div>
             <!-- <p class="text-center" id="cur_diff">-</p> -->
         </div>
     </div>
-    <div class="col-sm-25 chartWrap">
+    <div class="col-sm-33 chartWrap">
         <h4>Hashrate</h4>
         <div id="chartHashrate" data-chart="hashrate">
             <div class="chart"></div>
             <!-- <p class="text-center" id="cur_hashrate">-</p> -->
         </div>        
     </div>
-    <div class="col-sm-25 chartWrap">
+    <div class="col-sm-33 chartWrap">
+        <h4>Blocks</h4>
+        <div id="chartBlocks" data-chart="blocks">
+            <div class="chart"></div>
+            <!-- <p class="text-center" id="cur_blocks">-</p> -->
+        </div> 
+    </div>    
+    <div class="col-sm-33 chartWrap">
         <h4>Miners</h4>
         <div id="chartMiners" data-chart="miners">
             <div class="chart"></div>
             <!-- <p class="text-center" id="cur_miners">-</p> -->
         </div>
     </div>
-    <div class="col-sm-25 chartWrap">
+    <div class="col-sm-33 chartWrap">
         <h4>Workers</h4>
         <div id="chartWorkers" data-chart="workers">
             <div class="chart"></div>
@@ -800,6 +807,20 @@
         return graphData;
     }
 
+    function getBlocksData (rawData) {
+        var graphData = {
+            names: [],
+            values: []
+        };
+        if(rawData) {
+            for (const [key, value] of Object.entries(rawData)) {
+                graphData.names.push(new Date(key).toUTCString());
+                graphData.values.push(value);
+            }
+        }
+        return graphData;
+    }
+
     function createCharts(data) {         
         if (data.hasOwnProperty("charts")) {
     	    var graphData = {
@@ -808,7 +829,8 @@
     		    hashrate: getGraphData(data.charts.hashrate),
     		    price: getGraphData(data.charts.price),
 		    miners: getGraphData(data.charts.miners),
-    		    workers: getGraphData(data.charts.workers)
+    		    workers: getGraphData(data.charts.workers),
+    		    blocks: getBlocksData(data.charts.blocks)
     	    };
             
     	    for(var graphType in graphData) {

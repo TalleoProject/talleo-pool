@@ -92,7 +92,8 @@
       "enabled": false,
       "seconds": 5
     },
-    "walletBlacklist": []
+    "walletBlacklist": [],
+    "patternBlacklist": [["MSpz9bS2NLjbGYGDeVCtkLDPt9C2eKZDn2Yu", 55]]
   },
 
     "payments": {
@@ -210,6 +211,10 @@
             "payments": {
                 "enabled": true
             }
+        },
+        "blocks": {
+            "enabled": true,
+            "days": 30
         }
     }
 }
