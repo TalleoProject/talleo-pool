@@ -501,7 +501,7 @@
             // Get the 15 minute average load.
             var averageLoad = lastStats.system.load[2];
             averageLoad = averageLoad / lastStats.system.number_cores;
-            updateText('poolLoad', averageLoad.toFixed(2));
+            updateText('poolLoad', averageLoad.toFixed(2) + (lastStats.system.number_cores > 1 ? ' (' + lastStats.system.number_cores + ' cores)' : ''));
 
             var shareCount = lastStats.pool.roundHashes;
 
