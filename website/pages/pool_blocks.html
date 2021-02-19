@@ -8,6 +8,14 @@
         width: 5px;
         border-width: 3px;
     }
+    a.chart-style-low{
+        background-color: red;
+        border-left-color: red;
+    }
+    a.chart-style-avg{
+        background-color: yellow;
+        border-left-color: yellow;
+    }
     .blocksStatHolder > span{
         display: inline-block;
         border-radius: 5px;
@@ -34,6 +42,7 @@
 <h3>Pool Blocks</h3>
 <div class="blocksStatHolder">
     <span class="bg-primary">Total Blocks Mined: <span id="blocksTotal"></span></span>
+    <span class="bg-info">Average Blocks/Day: <span id="blocksAverage"></span></span>
     <span class="bg-info">Maturity Depth Requirement: <span id="blocksMaturityCount"></span></span>
     <span class="bg-info">Average Luck: <span id="blocksAverageLuck"></span></span>
     <span class="bg-info">Average Time: <span id="blocksAverageTime"></span></span>
@@ -47,7 +56,7 @@
     <h4 id="blocksChartTitle">Blocks found</h4>
     <div class="chart" style="height:200px;">
         <canvas id="blocksChart"></canvas>
-        <a class="chart-style"></a>
+        <a class="chart-style"></a><a class="chart-style-avg"></a><a class="chart-style-low"></a>
     </div>
 </div>
 
@@ -95,43 +104,98 @@
         }
     };
 
+    Array.prototype.average = function() {
+        return this.reduce((a, b) => a + b, 0) / this.length;
+    }
+
+    function objSize(obj) {
+        var size = 0;
+        for (key in obj) {
+            size++;
+        }
+        return size;
+    }
+
     // Chart
     var displayedChart = false;
+    var blockChart = {};
     function generateChart(data) {
-        if (displayedChart || !data || data === "undefined") return;
+        if (!data || data === "undefined") return;
 
         var chartDays = lastStats.config.blocksChartDays || null;
-        var title = 'Blocks found';
+        var title;
         if (chartDays) {
-            if (chartDays === 1) title = 'Blocks found in the last 24 hours';
-            else title = 'Blocks found in the last {DAYS} days';
-	    title = title.replace('{DAYS}', chartDays);
+            if (chartDays === 1) {
+                title = 'Blocks found in the last {HOURS} hours';
+                title = title.replace('{HOURS}', objSize(data));
+            } else {
+                title = 'Blocks found in the last {DAYS} days';
+                title = title.replace('{DAYS}', objSize(data));
+            }
+        } else {
+            return;
         }
         updateText('blocksChartTitle', title);
 
         var labels = [];
         var values = [];
+        var avg = 0;
+        var dataCount = 0;
 
         for (var key in data) {
             var label = key;
-            if (chartDays && chartDays === 1) {
+            if (chartDays === 1) {
                 var keyParts = key.split(' ');
                 label = keyParts[1].replace(':00', '');
             }
             labels.push(label);
             values.push(data[key]);
+            avg += data[key];
+            dataCount++;
+        }
+
+        if (dataCount == 0) {
+            updateText('blocksAverage', 0);
+        } else {
+            if (chartDays > 1) {
+                avg /= dataCount;
+            } else {
+                avg *= 24 / dataCount;
+            }
+            updateText('blocksAverage', avg.toFixed(1));
+        }
+
+        if (displayedChart) {
+            blockChart.data.labels = labels;
+            blockChart.data.datasets[0].data = values;
+            blockChart.update();
+            return;
         }
 
         var $chart = $('#blocksChart');
-        var bgcolor = null, bordercolor = null, borderwidth = null;
+        var bgcolor = null, bgcolor2 = null, bgcolor3 = null, bordercolor = null, bordercolor2 = null, bordercolor3 = null, borderwidth = null;
         var colorelem = $chart.siblings('a.chart-style');
+        var colorelem2 = $chart.siblings('a.chart-style-low');
+        var colorelem3 = $chart.siblings('a.chart-style-avg');
         if (colorelem.length == 1) {
             bgcolor = colorelem.css('background-color');
             bordercolor = colorelem.css('border-left-color');
             borderwidth = parseFloat(colorelem.css('width'));
         }
+        if (colorelem2.length == 1) {
+            bgcolor2 = colorelem2.css('background-color');
+            bordercolor2 = colorelem2.css('border-left-color');
+        }
+        if (colorelem3.length == 1) {
+            bgcolor3 = colorelem3.css('background-color');
+            bordercolor3 = colorelem3.css('border-left-color');
+        }
         if (bgcolor === null) bgcolor = 'rgba(0, 0, 0, .7)';
+        if (bgcolor2 === null) bgcolor2 = 'red';
+        if (bgcolor3 === null) bgcolor3 = 'yellow';
         if (bordercolor === null) bordercolor = '#03a9f4';
+        if (bordercolor2 === null) bordercolor2 = 'red';
+        if (bordercolor3 === null) bordercolor3 = 'yellow';
         if (borderwidth === null || isNaN(borderwidth)) borderwidth = 1;
 
         var chart = new Chart(document.getElementById('blocksChart'), {
@@ -142,8 +206,30 @@
                     label: 'Blocks',
                     data: values,
                     fill: false,
-                    backgroundColor: bgcolor,
-                    borderColor: bordercolor,
+                    backgroundColor: function(context) {
+                        var index = context.dataIndex;
+                        var value = context.dataset.data[index];
+                        var average = context.dataset.data.average();
+                        if (value < average * 0.8) {
+                            return bgcolor2;
+                        } else if (value < average * 1.2) {
+                            return bgcolor3;
+                        } else {
+                            return bgcolor;
+                        }
+                    },
+                    borderColor: function(context) { 
+                        var index = context.dataIndex;
+                        var value = context.dataset.data[index];
+                        var average = context.dataset.data.average();
+                        if (value < average * 0.8) {
+                            return bordercolor2;
+                        } else if (value < average * 1.2) {
+                            return bordercolor3;
+                        } else {
+                            return bordercolor;
+                        }
+                    },
                     borderWidth: borderwidth,
                     barThickness: 20,  // number (pixels) or 'flex'
                     maxBarThickness: 30 // number (pixels)                    
@@ -172,6 +258,7 @@
         $chart.show();
         $('#blocksChartDiv').show();
         displayedChart = true;
+        blockChart = chart;
     }
 
     var xhrGetBlocks;
