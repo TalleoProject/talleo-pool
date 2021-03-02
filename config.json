@@ -210,6 +210,9 @@
             },
             "payments": {
                 "enabled": true
+            },
+            "blocks": {
+                "enabled": true
             }
         },
         "blocks": {
