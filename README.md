@@ -104,11 +104,11 @@ Those are legitimate requirements. If you use old versions of Node.js or Redis t
 include `bind 127.0.0.1` in your `redis.conf` file. Also it's a good idea to learn about and understand software that
 you are using - a good place to start with redis is [data persistence](http://redis.io/topics/persistence).
 
-##### Easy install on Ubuntu 14 LTS
-Installing pool on different Linux distributives is different because it depends on system default components and versions. For now the easiest way to install pool is to use Ubuntu 14 LTS. Thus, all you had to do in order to prepare Ubuntu 14 for pool installation is to run:
+##### Easy install on Ubuntu 18 LTS
+Installing pool on different Linux distributives is different because it depends on system default components and versions. For now the easiest way to install pool is to use Ubuntu 18 LTS. Thus, all you had to do in order to prepare Ubuntu 18 for pool installation is to run:
 
 ```bash
-sudo apt-get install git build-essential redis-server libboost1.55-all-dev nodejs-dev nodejs-legacy npm cmake libssl-dev node-gyp
+sudo apt-get install git build-essential redis-server libboost-all-dev nodejs-dev nodejs npm cmake libssl1.0-dev node-gyp
 sudo ln -s /usr/bin/nodejs /usr/bin/node
 ```
 
