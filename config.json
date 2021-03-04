@@ -217,7 +217,7 @@
         },
         "blocks": {
             "enabled": true,
-            "days": 30
+            "days": 15
         }
     }
 }
