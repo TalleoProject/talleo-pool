@@ -225,6 +225,20 @@
             <!-- <p class="text-center" id="cur_workers">-</p> -->
         </div> 
     </div>    
+    <div class="col-sm-33 chartWrap">
+        <h4>Payments</h4>
+        <div id="chartPayments" data-chart="payments">
+            <div class="chart"></div>
+            <!-- <p class="text-center" id="cur_payments">-</p> -->
+        </div>
+    </div>
+    <div class="col-sm-33 chartWrap">
+        <h4>Fees</h4>
+        <div id="chartFees" data-chart="fees">
+            <div class="chart"></div>
+            <!-- <p class="text-center" id="cur_fees">-</p> -->
+        </div>
+    </div>
 
     <script>
         var currencyGraphStat = {
@@ -844,6 +858,20 @@
         return graphData;
     }
 
+    function getPaymentsData (rawData) {
+        var graphData = {
+            names: [],
+            values: []
+        };
+        if(rawData) {
+            for (const [key, value] of Object.entries(rawData)) {
+                graphData.names.unshift(new Date(key).toUTCString());
+                graphData.values.unshift(getReadableCoins(value, 2, true));
+            }
+        }
+        return graphData;
+    }
+
     function createCharts(data) {         
         if (data.hasOwnProperty("charts")) {
     	    var graphData = {
@@ -851,9 +879,11 @@
     		    diff: getGraphData(data.charts.difficulty),
     		    hashrate: getGraphData(data.charts.hashrate),
     		    price: getGraphData(data.charts.price),
-		    miners: getGraphData(data.charts.miners),
+    		    miners: getGraphData(data.charts.miners),
     		    workers: getGraphData(data.charts.workers),
-    		    blocks: getBlocksData(data.charts.blocks)
+    		    blocks: getBlocksData(data.charts.blocks),
+    		    payments: getPaymentsData(data.charts.payments),
+    		    fees: getPaymentsData(data.charts.fees)
     	    };
             
     	    for(var graphType in graphData) {

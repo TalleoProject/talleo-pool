@@ -218,6 +218,10 @@
         "blocks": {
             "enabled": true,
             "days": 15
+        },
+        "payments": {
+            "enabled": true,
+            "days": 7
         }
     }
 }
