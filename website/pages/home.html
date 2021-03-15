@@ -140,6 +140,7 @@
         <div><i class="fa fa-paw"></i> Last Hash: <a id="lastHash" target="_blank"></a></div>
         <div><i class="fas fa-coins"></i> Coins Mined: <span id="totalCoins"></span></div>
         <div><i class="fas fa-sync-alt"></i> Circulating Supply: <span id="circulatingSupply"></span></div>
+        <div><i class="far fa-money-bill-alt"></i> Market cap: <span id="marketCap"></span></div>
         <div><i class="fa fa-lock"></i> Locked Supply: <span id="lockedSupply"></span></div>
         <div><i class="fa fa-percent"></i> Emission: <span id="emissionPercent"></span></div>
         <div><i class="fas fa-cart-arrow-down"></i> Pending Transactions: <a href="./#mempool_transactions"><span id="pendingTransactions"></span></a></div>
@@ -475,6 +476,7 @@
             if (xhrGetTOP) xhrGetTOP.abort();
             if (xhrGetTotalCoins) xhrGetTotalCoins.abort();
             if (xhrGetCirculatingSupply) xhrGetCirculatingSupply.abort();
+            if (xhrGetPrice) xhrGetPrice.abort();
             if (xhrGetInfo) xhrGetInfo.abort();
         },
         init: function(){
@@ -1048,6 +1050,7 @@
 
 
     var xhrGetCirculatingSupply;
+    var xhrGetPrice;
     function updateCirculatingSupply(){
        if (xhrGetCirculatingSupply) xhrGetCirculatingSupply.abort();
         xhrGetCirculatingSupply = $.ajax({
@@ -1059,6 +1062,16 @@
             .done(function (data) {
                 if (data.hasOwnProperty('circulatingCoins')) {
                     updateText('circulatingSupply', getReadableCoins(data.circulatingCoins));
+
+                    xhrGetPrice = $.ajax({
+                        url: 'https://api.coinlore.com/api/ticker/?id=43092',
+                        method: "GET",
+                        dataType: 'json',
+                        cache: 'false'
+                    })
+                        .done(function (data2) {
+                            $('#marketCap').html((data.circulatingCoins / lastStats.config.coinUnits * parseFloat(data2[0]['price_usd'])).toFixed(2) + ' USD');
+                        });
                 }
                 if (data.hasOwnProperty('lockedCoins')) {
                     updateText('lockedSupply', getReadableCoins(data.lockedCoins));
