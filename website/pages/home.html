@@ -108,6 +108,7 @@
     <div class="col-md-4 stats">
         <h3>Our Pool</h3>
         <div><i class="fas fa-tachometer-alt"></i> Hash Rate: <span id="poolHashrate"></span></div>
+        <div><i class="fas fa-tachometer-alt"></i> Hash Rate (24 h average): <span id="poolHashrate24"></span></div>
         <div><i class="fa fa-users"></i> Connected Miners: <span id="poolMiners"></span></div>
         <div><i class="fa fa-gavel"></i> Connected Workers: <span id="poolWorkers"></span></div>
         <div><i class="far fa-clock"></i> Block Found: <span id="poolLastBlockFound"></span><span id="poolDrift"></span></div>
@@ -133,6 +134,7 @@
         <div><i class="fas fa-tachometer-alt"></i> Hash Rate: <span id="networkHashrate"></span></div>
         <div><i class="far fa-clock"></i> Block Found: <span id="networkLastBlockFound"></span><span id="networkDrift"></span></div>
         <div><i class="fa fa-unlock-alt"></i> Difficulty: <span id="networkDifficulty"></span></div>
+        <div><i class="fa fa-unlock-alt"></i> Difficulty (24 h average): <span id="networkDifficulty24"></span></div>
         <div><i class="fa fa-bars"></i> Blockchain Height: <span id="blockchainHeight"></span></div>
         <div><i class="far fa-money-bill-alt"></i> Last Reward: <span id="networkLastReward"></span></div>
         <div><i class="fa fa-paw"></i> Last Hash: <a id="lastHash" target="_blank"></a></div>
@@ -372,6 +374,7 @@
             <div class="yourStats"><i class="far fa-money-bill-alt"></i> Total Paid: <span id="yourPaid"></span></div>
             <div class="yourStats"><i class="far fa-clock"></i> Last Share Submitted: <span id="yourLastShare"></span></div>
             <div class="yourStats"><i class="fas fa-tachometer-alt"></i> Hash Rate: <span id="yourHashrateHolder"></span></div>
+            <div class="yourStats"><i class="fas fa-tachometer-alt"></i> Hash Rate (24 h average): <span id="yourHashrate24"></span></div>
             <div class="yourStats"><i class="fas fa-cloud-upload-alt"></i> Total Hashes Submitted: <span id="yourHashes"></span></div>
             <div class="yourStats"><i class="fa fa-th-large"></i> Total Blocks Found: <span id="yourBlocks"></span> <span id="yourBlocksPercent"></span></div>
             <div class="yourStats"><i class="fas fa-tachometer-alt"></i> Hashes Per Block: <span id="yourHashesPerBlock"></span></div>
@@ -440,6 +443,25 @@
     var poolDrift = 0;
     var netDrift = 0;
 
+    function getAverageDifficulty() {
+        var avg = 0;
+        var avgCount = 0;
+        var beginAtTimestamp = new Date(Date.now() - 86400000);
+        beginAtTimestamp = beginAtTimestamp / 1000 | 0;
+        if (lastStats.charts.difficulty) {
+            for (var i = 0; i < lastStats.charts.difficulty.length; i++) {
+                if (lastStats.charts.difficulty[i][0] >= beginAtTimestamp) {
+                    avg += lastStats.charts.difficulty[i][1];
+                    avgCount++;
+                }
+            }
+        }
+        if (avgCount > 0) {
+            avg /= avgCount;
+        }
+        return avg;
+    }
+
     currentPage = {
         destroy: function(){
             $('#networkLastBlockFound,#poolLastBlockFound,#yourLastShare,#marketLastUpdated').timeago('dispose');
@@ -470,6 +492,9 @@
             updateTitleText('networkHashrate', (lastStats.network.difficulty / lastStats.config.coinDifficultyTarget) + ' H/s');
             updateText('networkDifficulty', getReadableDifficultyString(lastStats.network.difficulty));
             updateTitleText('networkDifficulty', lastStats.network.difficulty);
+            var avgDiff = getAverageDifficulty();
+            updateText('networkDifficulty24', getReadableDifficultyString(avgDiff));
+            updateTitleText('networkDifficulty24', avgDiff);
             updateText('blockchainHeight', lastStats.network.height.toString());
             updateText('networkLastReward', getReadableCoins(lastStats.network.reward, 2));
             updateText('lastHash', lastStats.network.hash).setAttribute('href', getBlockchainUrl(lastStats.network.hash));
@@ -478,6 +503,10 @@
 
             updateText('poolHashrate', getReadableHashRateString(lastStats.pool.hashrate));
             updateTitleText('poolHashrate', lastStats.pool.hashrate + ' H/s');
+
+            var avgRate = getAverageHashrate(lastStats.charts.hashrate);
+            updateText('poolHashrate24', getReadableHashRateString(avgRate));
+            updateTitleText('poolHashrate24', avgRate);
 
             if (lastStats.pool.lastBlockFound){
                 var datacur = new Date() - new Date(parseInt(lastStats.pool.lastBlockFound)) + poolDrift;
@@ -684,9 +713,11 @@
 
     function calcEstimateProfit(){
         try {
+            var diff = getAverageDifficulty();
+            if (diff == 0) diff = lastStats.network.difficulty;
             var rateUnit = Math.pow(1000,parseInt($('#calcHashUnit').data('mul')));
             var hashRate = parseFloat($('#calcHashRate').val()) * rateUnit;
-            var profit = (hashRate * 86400 / lastStats.network.difficulty) * lastStats.network.reward;
+            var profit = (hashRate * 86400 / diff) * lastStats.network.reward;
             if (profit) {
                 updateText('calcHashAmount', getReadableCoins(profit, 2, true));
                 return;
@@ -711,6 +742,25 @@
 
     var xhrAddressPoll;
     var addressTimeout;
+
+    function getAverageHashrate(hashrates) {
+        var avg = 0;
+        var avgCount = 0;
+        var beginAtTimestamp = new Date(Date.now() - 86400000);
+        beginAtTimestamp = beginAtTimestamp / 1000 | 0;
+        if (hashrates) {
+            for (var i = 0; i < hashrates.length; i++) {
+                if (hashrates[i][0] >= beginAtTimestamp) {
+                    avg += hashrates[i][1];
+                    avgCount++;
+                }
+            }
+        }
+        if (avgCount > 0) {
+            avg /= avgCount;
+        }
+        return avg;
+    }
 
     $('#lookUp').click(function(){
 
@@ -766,6 +816,9 @@
 
                     updateText('yourHashrateHolder', getReadableHashRateString(data.stats.hashrate || 0));
                     updateTitleText('yourHashrateHolder', (data.stats.hashrate || 0) + ' H/s');
+                    var avgRate = getAverageHashrate(data.charts.hashrate);
+                    updateText('yourHashrate24', getReadableHashRateString(avgRate));
+                    updateTitleText('yourHashrate24', avgRate);
                     updateText('yourHashes', getReadableHashesString(data.stats.hashes));
                     updateTitleText('yourHashes', data.stats.hashes);
                     updateText('yourBlocks', (data.stats.blocks || 0));
