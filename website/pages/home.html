@@ -943,8 +943,8 @@
         };
         if(rawData) {
             for (const [key, value] of Object.entries(rawData)) {
-                graphData.names.unshift(new Date(key).toUTCString());
-                graphData.values.unshift(getReadableCoins(value, 2, true));
+                graphData.names.push(new Date(key).toUTCString());
+                graphData.values.push(getReadableCoins(value, 2, true));
             }
         }
         return graphData;
