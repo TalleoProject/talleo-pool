@@ -21,6 +21,6 @@ var themeCss = "themes/default-theme.css?ver=1";
 var networkStat = {
     "tlo": [
         ["pool.talleo.org","https://pool.talleo.org:7112"],
-        ["tlo-pool.raasu.org","https://tlo-pool.raasu.org:7119"]
+        ["pool.raasu.org","https://pool.raasu.org:7119"]
     ]
 };
