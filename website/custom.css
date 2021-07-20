@@ -157,6 +157,17 @@ fieldset[disabled] .btn-default.active {
   color: #03a678;
   background-color: #ffffff;
 }
+.btn-stop {
+  color: #ffffff;
+  background-color: red;
+}
+.btn-stop:hover,
+.btn-stop:focus,
+.btn-stop:active {
+  color: #ffffff;
+  background-color: darkred;
+  border-color: darkred;
+}
 .table th,
 .table .miningAppTitle {
   font-weight: 500;

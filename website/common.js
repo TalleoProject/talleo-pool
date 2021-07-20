@@ -72,4 +72,40 @@ function getReadableCoins(coins, digits, withoutSymbol){
     return amount + (withoutSymbol ? '' : (' ' + lastStats.config.symbol));
 }
 
- 
+function getAverageDifficulty() {
+    var avg = 0;
+    var avgCount = 0;
+    var beginAtTimestamp = new Date(Date.now() - 86400000);
+    beginAtTimestamp = beginAtTimestamp / 1000 | 0;
+    if (lastStats.charts.difficulty) {
+        for (var i = 0; i < lastStats.charts.difficulty.length; i++) {
+            if (lastStats.charts.difficulty[i][0] >= beginAtTimestamp) {
+                avg += lastStats.charts.difficulty[i][1];
+                avgCount++;
+            }
+        }
+    }
+    if (avgCount > 0) {
+        avg /= avgCount;
+    }
+    return avg;
+}
+
+function getAverageHashrate(hashrates) {
+    var avg = 0;
+    var avgCount = 0;
+    var beginAtTimestamp = new Date(Date.now() - 86400000);
+    beginAtTimestamp = beginAtTimestamp / 1000 | 0;
+    if (hashrates) {
+        for (var i = 0; i < hashrates.length; i++) {
+            if (hashrates[i][0] >= beginAtTimestamp) {
+                avg += hashrates[i][1];
+                avgCount++;
+            }
+        }
+    }
+    if (avgCount > 0) {
+        avg /= avgCount;
+    }
+    return avg;
+}

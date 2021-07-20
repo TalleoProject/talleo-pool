@@ -26,65 +26,6 @@
     #miningProfitCalc{
         margin: 35px 0;
     }
-    #calcHashDropdown{
-        border-radius: 0;
-        border-left: 0;
-        border-right: 0;
-    }
-    #calcHashHolder{
-        width: 590px;
-        max-width: 100%;
-    }
-    #calcHashRate{
-        z-index: inherit;
-        font-family: 'Inconsolata', monospace;
-    }
-    #calcHashAmount{
-        font-family: 'Inconsolata', monospace;
-    }
-    #calcHashResultsHolder{
-        min-width: 145px;
-        max-width: 145px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    #yourStatsInput{
-        z-index: inherit;
-        font-family: 'Inconsolata', monospace;
-    }
-    #yourAddressDisplay > span {
-        font-family: 'Inconsolata', monospace;
-    }
-    #lookUp > span:nth-child(2){
-        display: none;
-    }
-    .yourStats{
-        display: none;
-    }
-    #yourAddressDisplay{
-        display: inline-block;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        vertical-align: middle;
-        font-family: 'Inconsolata', monospace;
-        font-size: 0.9em;
-    }
-    #addressError{
-        color: red;
-    }
-
-
-    #payments_rows > tr > td{
-        vertical-align: middle;
-        font-family: 'Inconsolata', monospace;
-        font-size: 0.95em;
-        text-align: center;
-    }
-    #payments_rows > tr > td:nth-child(2){
-        text-align: left;
-    }
 
     .stats i.fa,
     .stats i.fas,
@@ -260,69 +201,6 @@
             tooltipFormat: '<b>{{y}}</b>, {{offset:names}}'
         };
 
-        var userGraphStat = {
-	        hashrate: {
-		        type: 'line',
-		        width: '100%',
-		        height: '180',
-		        lineColor: '#03a678',
-		        fillColor: 'rgba(3, 166, 120, .3)',
-		        spotColor: null,
-		        minSpotColor: null,
-		        maxSpotColor: null,
-		        highlightLineColor: '#236d26',
-		        spotRadius: 3,
-		        drawNormalOnTop: false,
-		        chartRangeMin: 0,
-		        tooltipFormat: '<b>{{y}}</b>, {{offset:names}}'
-	        },
-	        payments: {
-		        type: 'line',
-		        width: '100%',
-		        height: '180',
-		        lineColor: '#03a678',
-		        fillColor: 'rgba(3, 166, 120, .3)',
-		        spotColor: null,
-		        minSpotColor: null,
-		        maxSpotColor: null,
-		        highlightLineColor: '#236d26',
-		        spotRadius: 3,
-		        drawNormalOnTop: false,
-		        chartRangeMin: 0,
-		        tooltipFormat: '<b>{{y}}</b>, {{offset:names}}'
-	        },
-	        paymentsTotal: {
-		        type: 'line',
-		        width: '100%',
-		        height: '180',
-		        lineColor: '#03a678',
-		        fillColor: 'rgba(3, 166, 120, .3)',
-		        spotColor: null,
-		        minSpotColor: null,
-		        maxSpotColor: null,
-		        highlightLineColor: '#236d26',
-		        spotRadius: 3,
-		        drawNormalOnTop: false,
-		        chartRangeMin: 0,
-		        tooltipFormat: '<b>{{y}}</b>, {{offset:names}}'
-	        },
-	        blocks: {
-		        type: 'line',
-		        width: '100%',
-		        height: '180',
-		        lineColor: '#03a678',
-		        fillColor: 'rgba(3, 166, 120, .3)',
-		        spotColor: null,
-		        minSpotColor: null,
-		        maxSpotColor: null,
-		        highlightLineColor: '#236d26',
-		        spotRadius: 3,
-		        drawNormalOnTop: false,
-		        chartRangeMin: 0,
-		        tooltipFormat: '<b>{{y}}</b>, {{offset:names}}'
-	        }
-        };
-
         $(function() {
             $('[data-toggle="tooltip"]').tooltip();
         });
@@ -330,149 +208,17 @@
 
 </div>
 
-<!-- <hr> -->
-
-<div id="miningProfitCalc">
-    <h3>Estimate Mining Profits</h3>
-    <div id="calcHashHolder">
-        <div class="input-group">
-            <input type="number" class="form-control" id="calcHashRate" placeholder="Enter Your Hash Rate">
-            <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="calcHashDropdown">
-                    <span id="calcHashUnit" data-mul="0">H/s</span> <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-right" role="menu" id="calcHashUnits">
-                    <li><a href="#" data-mul="0">H/s</a></li>
-                    <li><a href="#" data-mul="1">kH/s</a></li>
-                    <li><a href="#" data-mul="2">MH/s</a></li>
-                </ul>
-            </div>
-            <span class="input-group-addon">=</span>
-            <span class="input-group-addon" id="calcHashResultsHolder"><span id="calcHashAmount"></span> <span id="calcHashSymbol"></span>/day</span>
-        </div>
-    </div>
-</div>
-
-<hr>
-
-<div class="stats">
-    <h3>Your Stats & Payment History</h3>
-
-    <div class="input-group">
-        <input class="form-control" id="yourStatsInput" type="text" placeholder="Enter Your Address">
-        <span class="input-group-btn"><button class="btn btn-default" type="button" id="lookUp">
-            <span><i class="fa fa-search"></i> Lookup</span>
-            <span><i class="fas fa-sync fa-spin"></i> Searching...</span>
-        </button></span>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-4 stats">
-            <div id="addressError"></div>
-            <!-- <div class="yourStats"><i class="fa fa-key"></i> Address: <span id="yourAddressDisplay"></span></div> -->
-            <div class="yourStats"><i class="fas fa-dollar-sign"></i> Minimum Payout: <span id="paymentsMinimum"></span> <a href="./#settings">change</a></div>
-            <div class="yourStats"><i class="fas fa-university"></i> Pending Balance: <span id="yourPendingBalance"></span></div>
-            <div class="yourStats"><i class="far fa-money-bill-alt"></i> Total Paid: <span id="yourPaid"></span></div>
-            <div class="yourStats"><i class="far fa-clock"></i> Last Share Submitted: <span id="yourLastShare"></span></div>
-            <div class="yourStats"><i class="fas fa-tachometer-alt"></i> Hash Rate: <span id="yourHashrateHolder"></span></div>
-            <div class="yourStats"><i class="fas fa-tachometer-alt"></i> Hash Rate (24 h average): <span id="yourHashrate24"></span></div>
-            <div class="yourStats"><i class="fas fa-cloud-upload-alt"></i> Total Hashes Submitted: <span id="yourHashes"></span></div>
-            <div class="yourStats"><i class="fa fa-th-large"></i> Total Blocks Found: <span id="yourBlocks"></span> <span id="yourBlocksPercent"></span></div>
-            <div class="yourStats"><i class="fas fa-tachometer-alt"></i> Hashes Per Block: <span id="yourHashesPerBlock"></span></div>
-            <div class="yourStats"><i class="fas fa-dollar-sign"></i> Hashes Per <abbr id="coinSymbol">Coin</abbr>: <span id="yourHashesPerCoin"></span></div>
-        </div>
-        <div class="col-sm-4">            
-            <div class="userChart" data-chart="user_hashrate">
-                <h4>Hash Rate</h4>
-                <div class="chart">
-                    
-                </div>                
-            </div>
-        </div> 
-        <div class="col-sm-4">
-            <div class="userChart" data-chart="user_payments">
-                <h4>Payments</h4>
-                <div class="chart">
-                    
-                </div> 
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="userChart" data-chart="user_paymentsTotal">
-                <h4>Payments/day</h4>
-                <div class="chart">
-                    
-                </div> 
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="userChart" data-chart="user_blocks">
-                <h4>Blocks</h4>
-                <div class="chart">
-                    
-                </div> 
-            </div>
-        </div>
-    </div>
-    
-
-    <br class="yourStats">
-
-    <h3 class="yourStats">Payments</h3>
-    <div class="yourStats table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th><i class="far fa-clock"></i> Time Sent</th>
-                <th><i class="fa fa-paw"></i> Transaction Hash</th>
-                <th><i class="far fa-money-bill-alt"></i> Amount</th>
-                <th><i class="fa fa-sitemap"></i> Mixin</th>
-            </tr>
-            </thead>
-            <tbody id="payments_rows">
-
-            </tbody>
-        </table>
-    </div>
-    <p class="yourStats text-center">
-        <button type="button" class="btn btn-default" id="loadMorePayments">Load More</button>
-    </p>
-
-</div>
-
 <script>
     var poolDrift = 0;
     var netDrift = 0;
 
-    function getAverageDifficulty() {
-        var avg = 0;
-        var avgCount = 0;
-        var beginAtTimestamp = new Date(Date.now() - 86400000);
-        beginAtTimestamp = beginAtTimestamp / 1000 | 0;
-        if (lastStats.charts.difficulty) {
-            for (var i = 0; i < lastStats.charts.difficulty.length; i++) {
-                if (lastStats.charts.difficulty[i][0] >= beginAtTimestamp) {
-                    avg += lastStats.charts.difficulty[i][1];
-                    avgCount++;
-                }
-            }
-        }
-        if (avgCount > 0) {
-            avg /= avgCount;
-        }
-        return avg;
-    }
-
     currentPage = {
         destroy: function(){
-            $('#networkLastBlockFound,#poolLastBlockFound,#yourLastShare,#marketLastUpdated').timeago('dispose');
-            if (xhrAddressPoll) xhrAddressPoll.abort();
-            if (addressTimeout) clearTimeout(addressTimeout);
+            $('#networkLastBlockFound,#poolLastBlockFound,#marketLastUpdated').timeago('dispose');
             clearInterval(intervalMarketPolling);
             for (var marketPoll in xhrMarketGets){
                 xhrMarketGets[marketPoll].abort();
             }
-            if (xhrGetPayments) xhrGetPayments.abort();
             if (xhrGetTOP) xhrGetTOP.abort();
             if (xhrGetTotalCoins) xhrGetTotalCoins.abort();
             if (xhrGetCirculatingSupply) xhrGetCirculatingSupply.abort();
@@ -555,30 +301,7 @@
 
             updateText('poolFee', /*floatToString(totalFee)*/ totalFee + '%');
 
-            var address = $('#yourStatsInput').val().trim();
-            if (address != '') {
-                $.ajax({
-                    url: api + '/get_miner_payout_level',
-                    data: {
-                        address: address
-                    },
-                    dataType: 'json',
-                    cache: 'false'
-                }).done(function(data){
-                    if (data.level == undefined) {
-                        updateText('paymentsMinimum', getReadableCoins(lastStats.config.minPaymentThreshold));
-                    }
-                    else {
-                        updateText('paymentsMinimum', getReadableCoins(data.level * lastStats.config.coinUnits));
-                    }
-                });
-            }
-            else {
-                updateText('paymentsMinimum', getReadableCoins(lastStats.config.minPaymentThreshold));
-            }
-
             updateText('blockSolvedTime', lastStats.pool.hashrate ? getReadableTime(lastStats.network.difficulty / lastStats.pool.hashrate) : 'N/A');
-            updateText('calcHashSymbol', lastStats.config.symbol);
             updateTotalCoins();
             updateCirculatingSupply();
             updateInfo();
@@ -587,21 +310,17 @@
                 updateText('blocksPercent', '(' + (lastStats.pool.totalBlocks * 100 / lastStats.network.height).toFixed(2) + '%)');
             } 
 
-            calcEstimateProfit();
-
             // Get the 15 minute average load.
             var averageLoad = lastStats.system.load[2];
             averageLoad = averageLoad / lastStats.system.number_cores;
             updateText('poolLoad', averageLoad.toFixed(2) + (lastStats.system.number_cores > 1 ? ' (' + lastStats.system.number_cores + ' cores)' : ''));
-
-            var shareCount = lastStats.pool.roundHashes;
 
             updateTop10Miners();
         }
     };
 
 
-    $('#networkLastBlockFound,#poolLastBlockFound,#yourLastShare,#marketLastUpdated').timeago();
+    $('#networkLastBlockFound,#poolLastBlockFound,#marketLastUpdated').timeago();
 
     function getReadableHashShare(hash){
         var i = 0;
@@ -698,210 +417,6 @@
             })(i);
         }
     }
-
-
-
-
-
-    /* Hash Profitability Calculator */
-
-    $('#calcHashRate').keyup(calcEstimateProfit).change(calcEstimateProfit);
-
-    $('#calcHashUnits > li > a').click(function(e){
-        e.preventDefault();
-        $('#calcHashUnit').text($(this).text()).data('mul', $(this).data('mul'));
-        calcEstimateProfit();
-    });
-
-    function calcEstimateProfit(){
-        try {
-            var diff = getAverageDifficulty();
-            if (diff == 0) diff = lastStats.network.difficulty;
-            var rateUnit = Math.pow(1000,parseInt($('#calcHashUnit').data('mul')));
-            var hashRate = parseFloat($('#calcHashRate').val()) * rateUnit;
-            var profit = (hashRate * 86400 / diff) * lastStats.network.reward;
-            if (profit) {
-                updateText('calcHashAmount', getReadableCoins(profit, 2, true));
-                return;
-            }
-        }
-        catch(e){ }
-        updateText('calcHashAmount', '');
-    }
-
-
-
-
-
-    /* Stats by mining address lookup */
-
-    function getPaymentCells(payment){
-        return '<td>' + formatDate(payment.time) + '</td>' +
-                '<td>' + formatPaymentLink(payment.hash) + '</td>' +
-                '<td>' + getReadableCoins(payment.amount, 2, true) + '</td>' +
-                '<td>' + payment.mixin + '</td>';
-    }
-
-    var xhrAddressPoll;
-    var addressTimeout;
-
-    function getAverageHashrate(hashrates) {
-        var avg = 0;
-        var avgCount = 0;
-        var beginAtTimestamp = new Date(Date.now() - 86400000);
-        beginAtTimestamp = beginAtTimestamp / 1000 | 0;
-        if (hashrates) {
-            for (var i = 0; i < hashrates.length; i++) {
-                if (hashrates[i][0] >= beginAtTimestamp) {
-                    avg += hashrates[i][1];
-                    avgCount++;
-                }
-            }
-        }
-        if (avgCount > 0) {
-            avg /= avgCount;
-        }
-        return avg;
-    }
-
-    $('#lookUp').click(function(){
-
-        var address = $('#yourStatsInput').val().trim();
-        if (!address){
-            $('#yourStatsInput').focus();
-            return;
-        }
-
-        $('#addressError').hide();
-        $('.yourStats').hide();
-        $('#payments_rows').empty();
-
-        $('#lookUp > span:first-child').hide();
-        $('#lookUp > span:last-child').show();
-
-
-        if (xhrAddressPoll) xhrAddressPoll.abort();
-        if (addressTimeout) clearTimeout(addressTimeout);
-
-        function fetchAddressStats(){
-            xhrAddressPoll = $.ajax({
-                url: api + '/stats_address',
-                data: {
-                    address: address,
-                },
-                dataType: 'json',
-                cache: 'false',
-                success: function(data){                    
-
-                    $('#lookUp > span:last-child').hide();
-                    $('#lookUp > span:first-child').show();
-
-                    if (!data.stats){
-                        $('.yourStats, .userChart').hide();
-                        $('#addressError').text(data.error).show();
-
-                        return;
-                    }
-
-
-                    $('#addressError').hide();
-
-                    if (data.stats.lastShare) {
-                        var lastShareTime = new Date() - new Date(parseInt(data.stats.lastShare) * 1000) + poolDrift;
-                        if (lastShareTime < 0) {
-                            poolDrift -= lastShareTime;
-                            $('#poolDrift').html("<!-- drift " + poolDrift + " ms -->");
-                        }
-                        $('#yourLastShare').timeago('update', new Date(parseInt(data.stats.lastShare) * 1000 - poolDrift).toISOString());
-                    } else
-                        updateText('yourLastShare', 'Never');
-
-                    updateText('yourHashrateHolder', getReadableHashRateString(data.stats.hashrate || 0));
-                    updateTitleText('yourHashrateHolder', (data.stats.hashrate || 0) + ' H/s');
-                    var avgRate = getAverageHashrate(data.charts.hashrate);
-                    updateText('yourHashrate24', getReadableHashRateString(avgRate));
-                    updateTitleText('yourHashrate24', avgRate);
-                    updateText('yourHashes', getReadableHashesString(data.stats.hashes));
-                    updateTitleText('yourHashes', data.stats.hashes);
-                    updateText('yourBlocks', (data.stats.blocks || 0));
-                    updateTitleText('yourBlocks', (data.stats.blocks || 0));
-                    if (lastStats.network.height) {
-                        updateText('yourBlocksPercent', '(' + ((data.stats.blocks || 0) * 100 / lastStats.network.height).toFixed(2) + '%)');
-                    }
-                    var hashesPerBlock = data.stats.blocks ? ((data.stats.hashes || 0) / data.stats.blocks) : 0;
-                    updateText('yourHashesPerBlock', getReadableHashesString(hashesPerBlock));
-                    updateTitleText('yourHashesPerBlock', hashesPerBlock);
-                    var totalPaid = (data.stats.paid || 0) / lastStats.config.coinUnits;
-                    updateText('yourHashesPerCoin', getReadableHashesString(totalPaid ? (data.stats.hashes / totalPaid) : 0));
-                    updateText('coinSymbol', lastStats.config.symbol);
-                    updateTitleText('yourHashesPerCoin', totalPaid ? (data.stats.hashes / totalPaid) : 0);
-                    updateText('yourPaid', getReadableCoins(data.stats.paid));
-                    updateText('yourPendingBalance', getReadableCoins(data.stats.balance));
-
-                    renderPayments(data.payments);
-
-                    $('.yourStats').show();
-
-                    createUserCharts(data);
-
-                    docCookies.setItem('mining_address', address, Infinity);
-
-                    if (addressTimeout) clearTimeout(addressTimeout);
-                    addressTimeout = setTimeout(fetchAddressStats, 5000);
-                    
-                },
-                error: function(e){
-                    if (e.statusText === 'abort') return;
-                    $('#addressError').text('Connection error').show();
-                }
-            });
-        }
-        fetchAddressStats();
-    });
-    
-    var urlWalletAddress = location.search.split('wallet=')[1] || 0;
-
-    var address = urlWalletAddress || docCookies.getItem('mining_address');
-
-    var xhrRenderUserCharts;
-
-    function createUserCharts(data) {
-	    for(var chart in userGraphStat) {
-		    if(data['charts'][chart] && data['charts'][chart].length) {
-			    var graphData = getGraphData(data['charts'][chart], chart == 'payments' || chart == 'paymentsTotal');
-			    userGraphStat[chart].tooltipValueLookups = {names: graphData.names};
-			    $('[data-chart=user_' + chart + ']').show().find('.chart').sparkline(graphData.values, userGraphStat[chart]);
-		    }
-	    }
-    }
-
-    if (address){
-        $('#yourStatsInput').val(address);
-        $('#lookUp').click();
-    }
-
-    $('#yourStatsInput').keyup(function(e){
-        if(e.keyCode === 13)
-            $('#lookUp').click();
-    });
-
-    var xhrGetPayments;
-    $('#loadMorePayments').click(function(){
-        if (xhrGetPayments) xhrGetPayments.abort();
-        xhrGetPayments = $.ajax({
-            url: api + '/get_payments',
-            data: {
-                time: $('#payments_rows').children().last().data('time'),
-                address: address
-            },
-            dataType: 'json',
-            cache: 'false',
-            success: function(data){
-                renderPayments(data);
-            }
-        });
-    });
-
 
 
     /* Show stats of the currency */
