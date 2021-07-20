@@ -1,11 +1,11 @@
 {
-    "name": "forknote-pool",
-    "version": "0.0.1",
+    "name": "talleo-pool",
+    "version": "1.1.5",
     "license": "GPL-2.0",
-    "authors": "Matthew Little",
+    "authors": ["Matthew Little", "Mika Lindqvist", "Patrick Leisegang"],
     "repository": {
         "type": "git",
-        "url": "https://github.com/forknote/forknote-pool"
+        "url": "https://github.com/TalleoProject/talleo-pool"
     },
     "dependencies": {
         "bignum": "*",
@@ -18,6 +18,6 @@
         "turtlecoin-cryptonote-util": "0.0.7"
     },
     "engines": {
-        "node": ">=0.10"
+        "node": "^8"
     }
 }
