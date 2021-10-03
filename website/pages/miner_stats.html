@@ -25,6 +25,12 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    #calcHashResultsUSDHolder{
+        display: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     #yourStatsInput{
         z-index: inherit;
         font-family: 'Inconsolata', monospace;
@@ -180,6 +186,7 @@
             </div>
             <span class="input-group-addon">=</span>
             <span class="input-group-addon" id="calcHashResultsHolder"><span id="calcHashAmount"></span> <span id="calcHashSymbol"></span>/day</span>
+            <span class="input-group-addon" id="calcHashResultsUSDHolder">(<span id="calcHashAmountUSD"></span> USD/day)</span>
         </div>
     </div>
 </div>
@@ -284,6 +291,7 @@
             if (xhrAddressPoll) xhrAddressPoll.abort();
             if (addressTimeout) clearTimeout(addressTimeout);
             if (xhrGetPayments) xhrGetPayments.abort();
+            if (xhrGetPrice) xhrGetPrice.abort();
         },
         init: function(){
             updateText('calcHashSymbol', lastStats.config.symbol);
@@ -340,6 +348,8 @@
         calcEstimateProfit();
     });
 
+    var xhrGetPrice;
+
     function calcEstimateProfit(){
         try {
             var diff = getAverageDifficulty();
@@ -349,11 +359,23 @@
             var profit = (hashRate * 86400 / diff) * lastStats.network.reward;
             if (profit) {
                 updateText('calcHashAmount', getReadableCoins(profit, 2, true));
+                xhrGetPrice = $.ajax({
+                    url: 'https://api.coinlore.com/api/ticker/?id=43092',
+                    method: "GET",
+                    dataType: 'json',
+                    cache: 'false'
+                })
+                    .done(function (data) {
+                        updateText('calcHashAmountUSD', (profit / lastStats.config.coinUnits * parseFloat(data[0]['price_usd'])).toFixed(5));
+                        $('#calcHashResultsUSDHolder').css('display', 'table-cell');
+                    });
                 return;
             }
         }
         catch(e){ }
         updateText('calcHashAmount', '');
+        updateText('calcHashAmountUSD', '');
+        $('#calcHashResultsUSDHolder').css('display', 'none');
     }
 
     /* Stats by mining address lookup */
