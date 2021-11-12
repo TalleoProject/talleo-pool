@@ -79,11 +79,10 @@
         <div><i class="fa fa-bars"></i> Blockchain Height: <span id="blockchainHeight"></span></div>
         <div><i class="far fa-money-bill-alt"></i> Last Reward: <span id="networkLastReward"></span></div>
         <div><i class="fa fa-paw"></i> Last Hash: <a id="lastHash" target="_blank"></a></div>
-        <div><i class="fas fa-coins"></i> Coins Mined: <span id="totalCoins"></span></div>
-        <div><i class="fas fa-sync-alt"></i> Circulating Supply: <span id="circulatingSupply"></span></div>
+        <div><i class="fas fa-coins"></i> Coins Mined (emission): <span id="totalCoins"></span> <span id="totalCoinsPercent"></span></div>
+        <div><i class="fas fa-sync-alt"></i> Circulating Supply: <span id="circulatingSupply"></span> <span id="circulatingSupplyPercent"></span></div>
+        <div><i class="fa fa-lock"></i> Locked Supply: <span id="lockedSupply"></span> <span id="lockedSupplyPercent"></span></div>
         <div><i class="far fa-money-bill-alt"></i> Market cap: <span id="marketCap"></span></div>
-        <div><i class="fa fa-lock"></i> Locked Supply: <span id="lockedSupply"></span></div>
-        <div><i class="fa fa-percent"></i> Emission: <span id="emissionPercent"></span></div>
         <div><i class="fas fa-cart-arrow-down"></i> Pending Transactions: <a href="./#mempool_transactions"><span id="pendingTransactions"></span></a></div>
         <div><i class="fa fa-bars"></i> Total Transactions: <span id="totalTransactions"></span></div>
         <div id="blockSize"><i class="fa fa-th-large"></i> Maximum Block Size: <span id="maxBlockSize"></span></div>
@@ -553,8 +552,8 @@
             success: function(data){
                 if (data.result && data.result.block) {
                     updateText('totalCoins', getReadableCoins(data.result.block.alreadyGeneratedCoins));
+                    updateText('totalCoinsPercent', "(" + (data.result.block.alreadyGeneratedCoins / 300000000).toFixed(2) + '%)');
                     updateText('totalTransactions', data.result.block.alreadyGeneratedTransactions);
-                    updateText('emissionPercent', (data.result.block.alreadyGeneratedCoins / 300000000).toFixed(2) + '%');
                 } else {
                     console.log("Unable to fetch data about latest block!");
                 }
@@ -577,6 +576,7 @@
             .done(function (data) {
                 if (data.hasOwnProperty('circulatingCoins')) {
                     updateText('circulatingSupply', getReadableCoins(data.circulatingCoins));
+                    updateText('circulatingSupplyPercent', "(" + (data.circulatingCoins / 300000000).toFixed(2) + '%)');
 
                     xhrGetPrice = $.ajax({
                         url: 'https://api.coinlore.com/api/ticker/?id=43092',
@@ -590,6 +590,7 @@
                 }
                 if (data.hasOwnProperty('lockedCoins')) {
                     updateText('lockedSupply', getReadableCoins(data.lockedCoins));
+                    updateText('lockedSupplyPercent', "(" + (data.lockedCoins / 300000000).toFixed(2) + '%)');
                 }
             });
     }
