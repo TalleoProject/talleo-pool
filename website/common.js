@@ -43,12 +43,12 @@ function getReadableHashesString(hashes){
 }
 
 function getReadableTime(seconds){
-    var units = [ [60, 'second'], [60, 'minute'], [24, 'hour'],
-        [7, 'day'], [4, 'week'], [12, 'month'], [1, 'year'] ];
+    var units = [ [60, ['second', 'seconds']], [60, ['minute', 'minutes']], [24, ['hour', 'hours']], [7, ['day', 'days']], [(365/84), ['week', 'weeks']],
+                  [12, ['month', 'months']], [10, ['year', 'years']], [10, ['decade', 'decades']], [10, ['century', 'centuries']], [1, ['millenium', 'millenia']] ];
 
     function formatAmounts(amount, unit){
         var rounded = Math.floor(amount);
-        return '' + rounded + ' ' + unit + (rounded > 1 ? 's' : '');
+        return '' + rounded + ' ' + (rounded > 1 ? unit[1] : unit[0]);
     }
 
     var amount = seconds;
@@ -61,8 +61,10 @@ function getReadableTime(seconds){
                 return formatAmounts(amount, units[i][1]) + " and " + formatAmounts(amount2, units[i-1][1]);
             }
         }
-        amount2 = amount % units[i][0];
-        amount = amount / units[i][0];
+        if (units[i][0] != 1) {
+            amount2 = amount % units[i][0];
+            amount = amount / units[i][0];
+        }
     }
     return formatAmounts(amount, units[units.length - 1][1]);
 }

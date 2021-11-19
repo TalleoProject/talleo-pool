@@ -67,6 +67,7 @@
           <span data-toggle="tooltip" title="The average system load of the last 15 minutes. The closer this gets to 1, the more overloaded the pool is." class="fa fa-question-circle">
           </span>
         </div>
+        <div><i class="fas fa-server"></i> Server Uptime: <span id="uptime"></span></div>
     </div>
 
 
@@ -313,6 +314,8 @@
             var averageLoad = lastStats.system.load[2];
             averageLoad = averageLoad / lastStats.system.number_cores;
             updateText('poolLoad', averageLoad.toFixed(2) + (lastStats.system.number_cores > 1 ? ' (' + lastStats.system.number_cores + ' cores)' : ''));
+            updateText('uptime', getReadableTime(lastStats.system.uptime));
+            updateTitleText('uptime', lastStats.system.uptime + " seconds");
 
             updateTop10Miners();
         }
