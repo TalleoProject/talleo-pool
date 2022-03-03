@@ -1,10 +1,13 @@
 <style>
-
+    #fusion_transactions_table th:nth-child(2),
+    #fusion_transactions_table td:nth-child(2) {
+        display: none;
+    }
 </style>
 
-<h3 class="transactions">Transactions in memory pool</h3>
+<h3 class="transactions" id="transactions">No normal transactions in memory pool</h3>
 <div class="table-responsive">
-    <table class="table table-hover table-striped">
+    <table class="table table-hover table-striped" id="transactions_table" style="display: none;">
         <thead>
         <tr>
             <th><i class="fa fa-paw"></i> Hash</th>
@@ -14,6 +17,23 @@
         </tr>
         </thead>
         <tbody id="transactions_rows">
+
+        </tbody>
+    </table>
+</div>
+
+<h3 class="transactions" id="fusion_transactions">No fusion transactions in memory pool</h3>
+<div class="table-responsive">
+    <table class="table table-hover table-striped" id="fusion_transactions_table" style="display: none;">
+        <thead>
+        <tr>
+            <th><i class="fa fa-paw"></i> Hash</th>
+            <th><i class="fa fa-paw"></i> Fee</th>
+            <th><i class="far fa-money-bill-alt"></i> Total Amount</th>
+            <th><i class="fas fa-arrows-alt"></i> Size</th>
+        </tr>
+        </thead>
+        <tbody id="fusion_transactions_rows">
 
         </tbody>
     </table>
@@ -52,28 +72,73 @@
         });
     }
 
+    function updateTransactionsCount(){
+        var $rows = $('#transactions_rows').children().get();
+        if ($rows.length == 0) {
+            $('#transactions').html('No normal transactions in memory pool');
+            $('#transactions_table').hide();
+        } else {
+            if ($rows.length == 1) {
+                $('#transactions').html('1 normal transaction in memory pool');
+            } else {
+                $('#transactions').html($rows.length + ' normal transactions in memory pool');
+            }
+            $('#transactions_table').show();
+        }
+    }
+
+    function updateFusionTransactionsCount(){
+        var $rows = $('#fusion_transactions_rows').children().get();
+        if ($rows.length == 0) {
+            $('#fusion_transactions').html('No fusion transactions in memory pool');
+            $('#fusion_transactions_table').hide();
+        } else {
+            if ($rows.length == 1) {
+                $('#fusion_transactions').html('1 fusion transaction in memory pool');
+            } else {
+                $('#fusion_transactions').html($rows.length + ' fusion transactions in memory pool');
+            }
+            $('#fusion_transactions_table').show();
+        }
+    }
+
     function renderTransactions(transactionsResults){
         var i;
         var $transactionsRows = $('#transactions_rows');
+        var $fusionTransactionsRows = $('#fusion_transactions_rows');
 
         // Add new transactions backwards
         for (i = transactionsResults.length - 1; i >= 0; i--){
 
             var transaction = transactionsResults[i];
             var transactionJson = JSON.stringify(transaction);
-            var existingRow = document.getElementById('transactionRow' + transaction.hash);
 
-            if (existingRow && existingRow.getAttribute('data-json') !== transactionJson){
-                $(existingRow).replaceWith(getTransactionRowElement(transaction, transactionJson));
-            }
-            else if (!existingRow){
-                var transactionElement = getTransactionRowElement(transaction, transactionJson);
-                console.log("Added transaction: " + transaction.hash);
-                $transactionsRows.prepend(transactionElement);
+            if (transaction.fee == 0){
+                var existingRow = document.getElementById('transactionRow' + transaction.hash);
+
+                if (existingRow && existingRow.getAttribute('data-json') !== transactionJson){
+                    $(existingRow).replaceWith(getTransactionRowElement(transaction, transactionJson));
+                } else if (!existingRow){
+                    var transactionElement = getTransactionRowElement(transaction, transactionJson);
+                    console.log("Added fusion transaction: " + transaction.hash);
+                    $fusionTransactionsRows.prepend(transactionElement);
+                    updateFusionTransactionsCount();
+                }
+            } else {
+                var existingRow = document.getElementById('transactionRow' + transaction.hash);
+
+                if (existingRow && existingRow.getAttribute('data-json') !== transactionJson){
+                    $(existingRow).replaceWith(getTransactionRowElement(transaction, transactionJson));
+                } else if (!existingRow){
+                    var transactionElement = getTransactionRowElement(transaction, transactionJson);
+                    console.log("Added normal transaction: " + transaction.hash);
+                    $transactionsRows.prepend(transactionElement);
+                    updateTransactionsCount();
+                }
             }
         }
 
-        // Check for removed transactions
+        // Check for removed normal transactions
         var rows = $transactionsRows.children().get();
         for (var j = 0; j < rows.length; j++){
             var hash = (rows[j]).getAttribute('data-hash');
@@ -85,8 +150,27 @@
                 }
             }
             if (!found){
-                console.log("Removed transaction: " + hash);
+                console.log("Removed normal transaction: " + hash);
                 (rows[j]).remove();
+                updateTransactionsCount();
+            }
+        }
+
+        // Check for removed fusion transactions
+        rows = $fusionTransactionsRows.children().get();
+        for (var j = 0; j < rows.length; j++){
+            var hash = (rows[j]).getAttribute('data-hash');
+            var found = false;
+            for (i = 0; i < transactionsResults.length; i++){
+                if (hash == transactionsResults[i].hash){
+                    found = true;
+                    break;
+                }
+            }
+            if (!found){
+                console.log("Removed fusion transaction: " + hash);
+                (rows[j]).remove();
+                updateFusionTransactionsCount();
             }
         }
     }
