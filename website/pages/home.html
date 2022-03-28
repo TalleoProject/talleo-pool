@@ -245,7 +245,10 @@
             updateTitleText('networkDifficulty24', avgDiff);
             updateText('blockchainHeight', lastStats.network.height.toString());
             updateText('networkLastReward', getReadableCoins(lastStats.network.reward, 2));
-            updateText('lastHash', lastStats.network.hash).setAttribute('href', getBlockchainUrl(lastStats.network.hash));
+            var lastHash = updateText('lastHash', lastStats.network.hash);
+            if (lastHash){
+                lastHash.setAttribute('href', getBlockchainUrl(lastStats.network.hash));
+            }
 
             updateText('currentEffort', (lastStats.pool.roundHashes / lastStats.network.difficulty * 100).toFixed(1) + '%');
 
