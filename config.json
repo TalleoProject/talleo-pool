@@ -137,12 +137,14 @@
 
     "daemon": {
         "host": "127.0.0.1",
-        "port": 33888
+        "port": 33888,
+        "ssl": false
     },
 
     "wallet": {
         "host": "127.0.0.1",
         "port": 33777,
+        "ssl": false,
         "password": "<replace with rpc password>"
     },
 
