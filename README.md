@@ -532,13 +532,14 @@ Donations
 
 If you want to support development of talleo-pool, you can send donations using following addresses or set "devDonation" to non-zero in [config.json](//github.com/TalleoProject/talleo-pool/blob/master/config.json#L112):
 * BCH: qryfpsnz3v607kupyrvnjgqang7urfj0fsetc3a9mf
+* BNB: bnb1dvpq9a686xj9qw70mvwhqqa6zd2p4nqa8jfd8y
+* BSC: 0xc1d2DDB00c5B110855FAD9E2C7b8157D358b050e
 * BTC: 1D1YBHmFkd4J7bEG6PYfZBLoXtp98hKsfw
+* DOGE: DBJ8T4QbRojjUNVYHkABnWPvm7goWiu1re
 * ETH: 0xc1d2DDB00c5B110855FAD9E2C7b8157D358b050e
 * ETN: etnjxvV1JwWJRCdbZETJ4d1NZAH1bmQyBBwfyJsB6cDKDj1U6fXcRnvJhDJZ5QJGG3Cqm3fLTA7ZCABhfa2fyb6P2Fwj1asPy2
 * ITNS: iz4zpuXFmwVKsKYmHZt2TzHd7BaSuUiep9VxCEBvCgPy3ijAkVb2ZMhVp7shCyrYvmGmcWoByUBJW3NqyAGMD1KX2oTNvZKFT
 * LTC: MAaio5kmZbzcJ8VGfSwtKQKdho8KK7GsTo
-* PSTAR: P6ZDs32zWmAgoXE6Caom2L7nNaKRtNjqvFsv6NQp8XzUZsB47V8XRPCG7dzLf59KPMXhyjLpPbSqyWaYpaDNwV121EFsG4Btr
-* BTOR: bTXPouErxAPNQ9Ajwtn7NE589BiU7vb8y9rRow3vZYerBVA9AL2RGb498XgkXwYpUMLagvWSYfHEmW3X2LqCxd7214jA6JuyA
 * TLO: TA4yACzMYuFYq7V6xVAWYHeS39jQ8w4mKRowpY6NskGuS1rZpjcWuCpdeCypwUCJrK9mGqVW9o1pY2EG3HW7BZkR2YRcc4YNa
 
 License
