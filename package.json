@@ -1,23 +1,35 @@
 {
-    "name": "talleo-pool",
+    "name": "@talleoproject/talleo-pool",
+    "description": "Mining pool for Talleo (TLO)",
     "version": "1.1.5",
     "license": "GPL-2.0",
-    "authors": ["Matthew Little", "Mika Lindqvist", "Patrick Leisegang"],
+    "authors": [
+        "Matthew Little",
+        "Mika Lindqvist",
+        "Patrick Leisegang"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/TalleoProject/talleo-pool"
     },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
     "dependencies": {
-        "bignum": "*",
         "async": "1",
-        "redis": "*",
-        "cli-color": "*",
-        "dateformat": "*",
         "base58-native": "*",
-        "turtlecoin-multi-hashing": "0.0.19",
-        "turtlecoin-cryptonote-util": "0.0.7"
+        "bignum": "*",
+        "cli-color": "^2.0.3",
+        "dateformat": "^3.0.3",
+        "redis": "^3.0.2",
+        "turtlecoin-cryptonote-util": "0.0.7",
+        "turtlecoin-multi-hashing": "0.0.19"
     },
     "engines": {
         "node": "^8"
-    }
+    },
+    "scripts": {
+        "start": "node init.js"
+    },
+    "devDependencies": {}
 }

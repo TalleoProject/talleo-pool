@@ -3,3 +3,5 @@ node_modules/
 config.json
 logs/
 npm-debug.log
+*.bak
+package-lock.json
