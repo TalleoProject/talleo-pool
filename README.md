@@ -475,16 +475,8 @@ You can create a testnet with the following steps:
 ### JSON-RPC Commands from CLI
 
 Documentation for JSON-RPC commands can be found here:
-* Daemon https://wiki.bytecoin.org/wiki/Daemon_JSON_RPC_API
-* Wallet https://wiki.bytecoin.org/wiki/Bytecoin_RPC_Wallet_API
-
-
-Curl can be used to use the JSON-RPC commands from command-line. Here is an example of calling `getblockheaderbyheight` for block 100:
-
-```bash
-curl 127.0.0.1:33888/json_rpc -d '{"method":"getblockheaderbyheight","params":{"height":100}}'
-```
-
+* [Daemon API](https://wiki.talleo.org/API/Daemon)
+* [Wallet API](https://wiki.talleo.org/API/Wallet)
 
 ### Monitoring Your Pool
 
