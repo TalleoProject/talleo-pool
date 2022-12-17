@@ -73,6 +73,7 @@
             <th><i class="far fa-clock"></i> Time Found</th>
             <th><i class="far fa-star-half"></i> Shares/Diff</th>
             <th><i class="far fa-money-bill-alt"></i> Reward</th>
+            <th><i class="fa fa-star"></i> Solver</th>
         </tr>
         </thead>
         <tbody id="blocks_rows">
@@ -380,7 +381,8 @@
             '<td>' + formatBlockLink(block.hash) + '</td>' +
             '<td>' + formatDate(block.time) + '</td>' +
             '<td>' + formatLuck(block.difficulty, block.shares) + '</td>' +
-            '<td>' + formatBlockReward(block.reward, block.status == "pending") + '</td>';
+            '<td>' + formatBlockReward(block.reward, block.status == "pending") + '</td>' +
+            '<td id="solver' + block.height + '"></td>';
 
         row.innerHTML = columns;
 
@@ -420,6 +422,27 @@
                 if (!inserted)
                     $blocksRows.append(blockElement);
             }
+            var xhrGetSolver = $.ajax({
+                url: api + '/get_solver',
+                data: {
+                    height: block.height
+                },
+                dataType: 'json',
+                cache: 'false',
+                success: function(data){
+                    var solver;
+                    if (data.height) {
+                        solver = document.getElementById('solver' + data.height);
+                    }
+                    if (solver) {
+                        if (data.solver) {
+                            solver.innerHTML = '**' + data.solver.substring(89);
+                        } else {
+                            solver.innerHTML = '';
+                        }
+                    }
+                }
+            });
 
         }
         if ($blocksRows.children().length >= 1) {
