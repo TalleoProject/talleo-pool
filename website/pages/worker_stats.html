@@ -34,6 +34,7 @@ function fetchAddressWorkers(address) {
           var new_id = 'chart_' + graphData[0].name;
           var $template = $("#worker_chart").clone().prop('id', new_id);
           if (graphData[0].y.length < 5) {
+            $template.addClass("nodata");
             $template.append('<br>Not enough data yet for worker: ' + graphData[0].name);
             $template.appendTo("#graphs");
           } else {
