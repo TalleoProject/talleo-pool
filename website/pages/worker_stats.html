@@ -1,5 +1,22 @@
 
 <script>
+    currentPage = {
+        destroy: function(){
+        },
+        init: function(){
+            loadScript("https://cdn.plot.ly/plotly-2.18.2.min.js", function() {
+            var urlWalletAddress = location.search.split('wallet=')[1] || 0;
+            var address = urlWalletAddress || docCookies.getItem('mining_address');
+            if (address) {
+	        $('#yourAddress').val(address);
+	        fetchAddressWorkers(address);
+            }
+            });
+        },
+        update: function(){
+        }
+    };
+
 function loadScript(url, callback){
   var script = document.createElement("script")
     script.type = "text/javascript";
@@ -37,11 +54,11 @@ function fetchAddressWorkers(address) {
             $template.addClass("nodata");
             $template.append('<br>Not enough data yet for worker: ' + graphData[0].name);
             $template.appendTo("#graphs");
+            $('#' + new_id).show();
           } else {
             var layout = {
               title: 'Hashrate worker: ' + graphData[0].name,
-              autosize: false,
-              width: 1000,
+              autosize: true,
               height: 500,
               margin: {
                 l: 50,
@@ -54,10 +71,14 @@ function fetchAddressWorkers(address) {
                 type: 'linear'
               }
             }
+            var config = {
+              autosizable: true,
+              responsive: true
+            }
             $template.appendTo("#graphs");
-            Plotly.newPlot(new_id, graphData, layout);
+            $('#' + new_id).show();
+            Plotly.newPlot(new_id, graphData, layout, config);
           }
-          $('#' + new_id).show();
         });
       }
     }
@@ -95,7 +116,7 @@ function getWorkerGraphData(worker, address, dataHandler) {
         mode: 'lines',
         fill: 'tonexty',
         connectgaps: true,
-        autosize: false
+        autosize: true
       }], rangeMax);
     }
   });
@@ -127,14 +148,6 @@ meaningful data depending on pool settings.</p>
 </div>
 
 <script>
-loadScript("https://cdn.plot.ly/plotly-1.2.0.min.js", function() {
-var urlWalletAddress = location.search.split('wallet=')[1] || 0;
-var address = urlWalletAddress || docCookies.getItem('mining_address');
-if (address) {
-	$('#yourAddress').val(address);
-	fetchAddressWorkers(address);
-}
-});
 $('#addressSetButton').click(function(){
   $("#graphs").empty();
   var address = $('#yourAddress').val();
