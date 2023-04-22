@@ -1,5 +1,5 @@
-@import url(//fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
-@import url(//fonts.googleapis.com/css?family=Roboto:400,300,500);
+@import url(//fonts.googleapis.com/css?family=Roboto+Condensed:400,700&display=swap);
+@import url(//fonts.googleapis.com/css?family=Roboto:400,300,500&display=swap);
 /* Insert your pool's unique css here */
 .marketRate {
   display: none;
@@ -73,6 +73,20 @@ h3,
   color: #ffffff;
   background-color: #03a678;
 }
+
+@media (max-width: 1024px) {
+  .navbar .container {
+    font-size: 8px;
+  }
+  .navbar-brand, .dropdown-menu {
+    font-size: 10px;
+  }
+
+  #stats_updated {
+    font-size: 0.8em;
+  }
+}
+
 #stats_updated {
   color: #F4FC3D;
 }
@@ -439,3 +453,20 @@ b {
   margin-bottom: 10px;
 }
 
+@media screen and (min-width: 1680px) {
+div.left {
+  float: left;
+  vertical-align: top;
+  min-width: 50%;
+  max-width: 50%;
+  padding-right: 1px;
+}
+
+div.right {
+  float: right;
+  vertical-align: top;
+  min-width: 50%;
+  max-width: 50%;
+  padding-left: 1px;
+}
+}
