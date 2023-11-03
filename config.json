@@ -93,7 +93,7 @@
       "seconds": 5
     },
     "walletBlacklist": [],
-    "patternBlacklist": [["MSpz9bS2NLjbGYGDeVCtkLDPt9C2eKZDn2Yu", 55]]
+    "patternBlacklist": [["MSpz9bS2NLjbGYGDeVCtkLDPt9C2eKZDn2Yu", 55],["8JhQVzGmB5DF6gwr9gJqRK1wAwqXJJsFv1N7", 55]]
   },
 
     "payments": {
