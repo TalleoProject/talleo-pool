@@ -16,11 +16,12 @@
         "registry": "https://npm.pkg.github.com"
     },
     "dependencies": {
+        "@mtl1979/base58-native": "git+https://github.com/mtl1979/node-base58.git",
         "async": "1",
-        "base58-native": "*",
         "bignum": "*",
         "cli-color": "^2.0.3",
         "dateformat": "^3.0.3",
+        "node": "^8.17.0",
         "redis": "^3.0.2",
         "turtlecoin-cryptonote-util": "0.0.7",
         "turtlecoin-multi-hashing": "0.0.19"
