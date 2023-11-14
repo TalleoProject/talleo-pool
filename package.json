@@ -17,8 +17,8 @@
     },
     "dependencies": {
         "@mtl1979/base58-native": "git+https://github.com/mtl1979/node-base58.git",
+        "@mtl1979/bignum": "git+https://github.com/mtl1979/node-bignum.git",
         "async": "1",
-        "bignum": "*",
         "cli-color": "^2.0.3",
         "dateformat": "^3.0.3",
         "node": "^8.17.0",
