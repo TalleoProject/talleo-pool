@@ -109,6 +109,11 @@
 
     <div class="col-md-4 stats">
         <script type="text/javascript" src="https://widget.coinlore.com/widgets/new-widget.js"></script><div class="coinlore-coin-widget" data-mcap="1" data-mcurrency="usd" data-d7="1" data-cwidth="100%" data-rank="1" data-vol="1" data-id="talleo" data-bcolor="#fff" data-tcolor="#333" data-ccolor="#333" data-pcolor="#333"></div>
+        <table>
+        <tr><th colspan="2" style="text-align:center;">Price (USD)</th></tr>
+        <tr><th>CryptoRadar</th><td id="crx" style="text-align:right;width:100px;">0.00000000</td></tr>
+        <tr><th>CEX78</th><td id="cex" style="text-align:right;width:100px;">0.00000000</td></tr>
+        </table>
     </div>
 
     <div class="col-md-4 stats marketRate">
@@ -225,6 +230,8 @@
             if (xhrGetCirculatingSupply) xhrGetCirculatingSupply.abort();
             if (xhrGetPrice) xhrGetPrice.abort();
             if (xhrGetInfo) xhrGetInfo.abort();
+            if (xhrGetPricesCEX) xhrGetPricesCEX.abort();
+            if (xhrGetPricesCRX) xhrGetPricesCRX.abort();
         },
         init: function(){
         },
@@ -322,6 +329,7 @@
             updateTitleText('uptime', lastStats.system.uptime + " seconds");
 
             updateTop10Miners();
+            updatePrices();
         }
     };
 
@@ -631,6 +639,33 @@
             }
         });
     }
+
+
+
+    var xhrGetPricesCEX;
+    var xhrGetPricesCRX;
+    function updatePrices(){
+      if (xhrGetPricesCEX) xhrGetPricesCEX.abort();
+      xhrGetPricesCEX = $.ajax({
+        url: 'https://cex78.com/api/coin_prices.json',
+        method: 'GET',
+        dataType: 'json',
+        cache: 'false',
+        success: function(data){
+            updateText('cex', data.tlo.usd);
+        }
+      });
+      if (xhrGetPricesCRX) xhrGetPricesCRX.abort();
+      xhrGetPricesCRX = $.ajax({
+        url: 'https://cryptoradar.exchange/api/coin_prices.json',
+        method: 'GET',
+        dataType: 'json',
+        cache: 'false',
+        success: function(data){
+            updateText('crx', data.tlo.usd);
+        }
+      });
+    };
 
 
 
