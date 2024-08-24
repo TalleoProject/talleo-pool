@@ -90,7 +90,8 @@
     },
     "floodProtection": {
       "enabled": false,
-      "seconds": 5
+      "seconds": 5,
+      "shares": 3
     },
     "walletBlacklist": [],
     "patternBlacklist": [["MSpz9bS2NLjbGYGDeVCtkLDPt9C2eKZDn2Yu", 55],["8JhQVzGmB5DF6gwr9gJqRK1wAwqXJJsFv1N7", 55]]
