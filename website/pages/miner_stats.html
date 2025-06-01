@@ -360,13 +360,13 @@
             if (profit) {
                 updateText('calcHashAmount', getReadableCoins(profit, 2, true));
                 xhrGetPrice = $.ajax({
-                    url: 'https://api.coinlore.com/api/ticker/?id=43092',
+                    url: 'https://cex78.com/api/coin_prices.json',
                     method: "GET",
                     dataType: 'json',
                     cache: 'false'
                 })
                     .done(function (data) {
-                        updateText('calcHashAmountUSD', (profit / lastStats.config.coinUnits * parseFloat(data[0]['price_usd'])).toFixed(5));
+                        updateText('calcHashAmountUSD', (profit / lastStats.config.coinUnits * parseFloat(data.tlo.usd)).toFixed(5));
                         $('#calcHashResultsUSDHolder').css('display', 'table-cell');
                     });
                 return;
